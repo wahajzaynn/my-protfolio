@@ -110,7 +110,7 @@
     z-index: 1;
     margin-top: 22px;
     font-size: 18px;
-    color: var(--text-muted);
+    color: var(--text);
     max-width: 50ch;
   }
 
@@ -131,6 +131,9 @@
     border: 1px solid var(--border);
     color: var(--text);
     transition: border-color .15s ease, background .15s ease;
+    cursor: pointer;
+    background: none;
+    display: inline-block;
   }
   .btn:hover{ text-decoration:none; border-color: var(--accent-line); background: var(--accent-soft); }
 
@@ -138,6 +141,12 @@
     border-color: var(--accent-line);
     background: var(--accent-soft);
     color: var(--accent);
+  }
+
+  .btn--secondary{
+    border-color: var(--border);
+    background: none;
+    color: var(--text);
   }
 
   /* ---------- Pipeline legend ---------- */
@@ -258,17 +267,22 @@
 
   .canvas-frame{
     margin-top: 22px;
-    border: 1px dashed var(--border);
+    border: 1px solid var(--border);
     border-radius: 10px;
-    background-image: radial-gradient(var(--border-soft) 1px, transparent 1px);
-    background-size: 20px 20px;
     background-color: var(--panel);
-    min-height: 190px;
+    min-height: 240px;
     display:flex;
     align-items:center;
     justify-content:center;
     text-align:center;
     padding: 24px;
+    overflow: hidden;
+  }
+
+  .canvas-frame img{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
   }
 
   .canvas-frame span{
@@ -283,6 +297,11 @@
     padding: 4px 0 4px 16px;
   }
   .result .label{ color: var(--accent); }
+
+  .result p{
+    font-size: 15.5px;
+    color: var(--text);
+  }
 
   .case-cta{
     margin-top: 22px;
@@ -306,6 +325,7 @@
     font-size: 15.5px;
     color: var(--text-muted);
     max-width: 60ch;
+    line-height: 1.7;
   }
 
   /* ---------- Footer ---------- */
@@ -354,9 +374,9 @@
     <h1>Wahaj Hussain</h1>
     <p class="subhead">I design AI-driven automation pipelines that replace manual sales follow-up, content publishing, and outreach work — built for Gulf businesses, running unattended.</p>
     <div class="hero-links">
-      <a class="btn btn--primary" href="mailto:your-email@example.com">Message me</a>
-      <a class="btn" href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener">LinkedIn</a>
-      <a class="btn" href="https://github.com/your-username" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn btn--primary" href="mailto:babywahaj@gmail.com">Message me</a>
+      <a class="btn btn--secondary" href="https://www.linkedin.com/in/wahajhussain-ae" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn btn--secondary" href="https://github.com/wahajzaynn" target="_blank" rel="noopener">GitHub</a>
     </div>
   </section>
 
@@ -399,16 +419,16 @@
       </div>
 
       <div class="canvas-frame">
-        <span>[ Insert workflow canvas screenshot here — 134-node system ]</span>
+        <span>[ Add your workflow canvas screenshot here — 134-node system ]</span>
       </div>
 
       <div class="result">
         <div class="label">Output</div>
-        <p>[ Add your real number here — e.g. average response time, leads processed per day ]</p>
+        <p>[ Add your real number here — e.g. 350 leads processed per week, 45% auto-qualified ]</p>
       </div>
 
       <div class="case-cta">
-        <a class="btn btn--primary" href="mailto:your-email@example.com">Want this for your sales team →</a>
+        <a class="btn btn--primary" href="mailto:babywahaj@gmail.com">Want this for your sales team →</a>
       </div>
     </div>
 
@@ -435,16 +455,16 @@
       </div>
 
       <div class="canvas-frame">
-        <span>[ Insert workflow canvas screenshot here ]</span>
+        <span>[ Add your workflow canvas screenshot here ]</span>
       </div>
 
       <div class="result">
         <div class="label">Output</div>
-        <p>Publishes automatically on a rolling hourly schedule — no manual writing or posting.</p>
+        <p>Publishes automatically on a rolling hourly schedule — 24 posts per day, zero manual writing or posting.</p>
       </div>
 
       <div class="case-cta">
-        <a class="btn btn--primary" href="mailto:your-email@example.com">Want this for your brand →</a>
+        <a class="btn btn--secondary" href="mailto:babywahaj@gmail.com">Want this for your brand →</a>
       </div>
     </div>
 
@@ -470,16 +490,16 @@
       </div>
 
       <div class="canvas-frame">
-        <span>[ Insert workflow canvas screenshot here ]</span>
+        <span>[ Add your workflow canvas screenshot here ]</span>
       </div>
 
       <div class="result">
         <div class="label">Output</div>
-        <p>[ Add real number — e.g. businesses contacted, categories covered ]</p>
+        <p>[ Add real numbers — e.g. 850+ businesses contacted across 12 categories, 18% response rate ]</p>
       </div>
 
       <div class="case-cta">
-        <a class="btn btn--primary" href="mailto:your-email@example.com">Want this for your business →</a>
+        <a class="btn btn--secondary" href="mailto:babywahaj@gmail.com">Want this for your business →</a>
       </div>
     </div>
 
@@ -488,15 +508,15 @@
   <!-- ABOUT -->
   <section class="about">
     <h3>Background</h3>
-    <p>BSc Computer Science (final year) · accounting experience in a Dubai tax center · e-commerce operator across multiple platforms. I combine technical automation skills with real numbers-driven business experience — not just code, but systems built to be trusted with revenue.</p>
+    <p>BSc Computer Science (final year) · accounting experience in a Dubai tax center · e-commerce operator across multiple platforms. I combine technical automation skills with real numbers-driven business operations to build systems that scale without headcount.</p>
   </section>
 
   <!-- FOOTER -->
   <footer>
     <div class="links">
-      <a href="mailto:your-email@example.com">Email</a>
-      <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://github.com/your-username" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:babywahaj@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/wahajhussain-ae" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/wahajzaynn" target="_blank" rel="noopener">GitHub</a>
     </div>
     <div class="stack">Built with n8n + GPT-4o</div>
   </footer>
