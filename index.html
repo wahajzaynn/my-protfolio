@@ -35,6 +35,7 @@
     font-family: var(--body);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
   a{ color: var(--accent); text-decoration: none; }
@@ -44,10 +45,74 @@
     outline-offset: 3px;
   }
 
+  /* ---------- Animated Background ---------- */
+  
+  .bg-animation {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: var(--bg);
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .floating-shape {
+    position: absolute;
+    opacity: 0.1;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+  }
+
+  .shape-1 {
+    width: 300px;
+    height: 300px;
+    top: 10%;
+    left: 5%;
+    animation: float1 20s ease-in-out infinite;
+  }
+
+  .shape-2 {
+    width: 200px;
+    height: 200px;
+    top: 60%;
+    right: 5%;
+    animation: float2 25s ease-in-out infinite;
+  }
+
+  .shape-3 {
+    width: 150px;
+    height: 150px;
+    bottom: 15%;
+    left: 50%;
+    animation: float3 22s ease-in-out infinite;
+  }
+
+  @keyframes float1 {
+    0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+    25% { transform: translateY(-50px) translateX(30px) rotate(90deg); }
+    50% { transform: translateY(-100px) translateX(0px) rotate(180deg); }
+    75% { transform: translateY(-50px) translateX(-30px) rotate(270deg); }
+  }
+
+  @keyframes float2 {
+    0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+    25% { transform: translateY(40px) translateX(-50px) rotate(90deg); }
+    50% { transform: translateY(80px) translateX(0px) rotate(180deg); }
+    75% { transform: translateY(40px) translateX(50px) rotate(270deg); }
+  }
+
+  @keyframes float3 {
+    0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+    33% { transform: translateY(-60px) translateX(40px) rotate(120deg); }
+    66% { transform: translateY(60px) translateX(-40px) rotate(240deg); }
+  }
+
   .wrap{
     max-width: 960px;
     margin: 0 auto;
     padding: 0 28px;
+    position: relative;
+    z-index: 1;
   }
 
   /* ---------- Progress Bar ---------- */
@@ -225,7 +290,6 @@
     text-align: center;
     font-size: 12px;
     color: var(--text-muted);
-    animation: fadeInUp 1s ease-out 0.8s backwards;
     animation: bounce 2s ease-in-out infinite;
   }
 
@@ -473,16 +537,14 @@
   }
 
   .metric-value{
-    font-size: 28px;
+    font-size: 36px;
     font-weight: 700;
     color: var(--accent);
-    margin-bottom: 4px;
-    animation: countUp 2s ease-out;
-  }
-
-  @keyframes countUp {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    margin-bottom: 8px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .metric-label{
@@ -556,6 +618,10 @@
     footer{ flex-direction: column; align-items:flex-start; }
     
     .scroll-hint{ display: none; }
+
+    .shape-1 { width: 200px; height: 200px; }
+    .shape-2 { width: 150px; height: 150px; }
+    .shape-3 { width: 100px; height: 100px; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -566,6 +632,13 @@
 </style>
 </head>
 <body>
+
+<!-- Animated Background -->
+<div class="bg-animation">
+  <div class="floating-shape shape-1"></div>
+  <div class="floating-shape shape-2"></div>
+  <div class="floating-shape shape-3"></div>
+</div>
 
 <div class="progress-bar"></div>
 
@@ -658,20 +731,20 @@
       
       <div class="metrics">
         <div class="metric">
-          <div class="metric-value">350+</div>
+          <div class="metric-value" data-target="350">0</div>
           <div class="metric-label">Leads per week</div>
         </div>
         <div class="metric">
-          <div class="metric-value">45%</div>
-          <div class="metric-label">Auto-qualified</div>
+          <div class="metric-value" data-target="45">0</div>
+          <div class="metric-label">Auto-qualified (%)</div>
         </div>
         <div class="metric">
-          <div class="metric-value">2 min</div>
-          <div class="metric-label">First response</div>
+          <div class="metric-value" data-target="2">0</div>
+          <div class="metric-label">Min first response</div>
         </div>
         <div class="metric">
-          <div class="metric-value">40h</div>
-          <div class="metric-label">Weekly saved</div>
+          <div class="metric-value" data-target="40">0</div>
+          <div class="metric-label">Hours saved weekly</div>
         </div>
       </div>
     </div>
@@ -760,7 +833,7 @@
     }
   });
 
-  // Animate numbers on scroll into view
+  // Animate numbers from 0 to target on scroll into view
   const observerOptions = {
     threshold: 0.5
   };
@@ -768,12 +841,33 @@
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
+        const element = entry.target;
+        const target = parseInt(element.getAttribute('data-target'));
+        
+        // Prevent re-animation
+        if (element.getAttribute('data-animated') === 'true') return;
+        
+        element.setAttribute('data-animated', 'true');
+        
+        let current = 0;
+        const increment = target / 50; // 50 steps for smooth animation
+        const duration = 2000; // 2 seconds
+        const step = duration / 50;
+        
+        const counter = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            element.textContent = target + (element.textContent.includes('%') ? '%' : '');
+            clearInterval(counter);
+          } else {
+            element.textContent = Math.round(current);
+          }
+        }, step);
       }
     });
   }, observerOptions);
 
-  document.querySelectorAll('.metric-value').forEach(el => observer.observe(el));
+  document.querySelectorAll('[data-target]').forEach(el => observer.observe(el));
 </script>
 
 </body>
